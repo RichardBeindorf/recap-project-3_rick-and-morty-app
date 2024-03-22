@@ -11,26 +11,37 @@ const nextButton = document.querySelector('[data-js="button-next"]');
 const pagination = document.querySelector('[data-js="pagination"]');
 
 // States
-const maxPage = 1;
-const page = 1;
-const searchQuery = "";
+let maxPage = 1;
+let page = 1;
+let searchQuery = "";
 
-
-async function getCharacters() {
+async function getCharacters(query = "") {
   try {
-    const response = await fetch("https://rickandmortyapi.com/api/character/");
+    let url = "https://rickandmortyapi.com/api/character/";
+    if (query) {
+      url += `?name=${encodeURIComponent(query)}`;
+    }
+    const response = await fetch(url);
     const data = await response.json();
-    console.log(data);
     return data.results;
-  } catch {
-    console.log("API Fehler");
+  } catch (error) {
+    console.log("API Fehler:");
   }
 }
 
-const allCharacters = await getCharacters();
-console.log(allCharacters);
+function displayCharacters(characters) {
+  cardContainer.innerHTML = "";
+  characters.forEach((character) => {
+    const newCharacter = CharacterCard(character);
+    cardContainer.appendChild(newCharacter);
+  });
+}
 
-allCharacters.forEach((character) => {
-  const newCharacter = CharacterCard(character);
-  cardContainer.appendChild(newCharacter);
+searchBar.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  searchQuery = event.target.elements.query.value;
+  const characters = await getCharacters(searchQuery);
+  displayCharacters(characters);
 });
+
+getCharacters().then(displayCharacters);
