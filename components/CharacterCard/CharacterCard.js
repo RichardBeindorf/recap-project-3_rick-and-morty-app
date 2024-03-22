@@ -1,4 +1,4 @@
-export default function CharacterCard({ src, name, status, type, occurrence }) {
+export default function CharacterCard({ image, name, status, type, episode }) {
   const cardContainer = document.querySelector('[data-js="card-container"]');
   const liCard = document.createElement("li");
   liCard.setAttribute("data-js", "card");
@@ -7,7 +7,7 @@ export default function CharacterCard({ src, name, status, type, occurrence }) {
           <div class="card__image-container">
             <img
               class="card__image"
-              src=${src}
+              src=${image}
               alt=${name}
             />
             <div class="card__image-gradient"></div>
@@ -20,7 +20,7 @@ export default function CharacterCard({ src, name, status, type, occurrence }) {
               <dt class="card__info-title">Type</dt>
               <dd class="card__info-description">${type}</dd>
               <dt class="card__info-title">Occurrences</dt>
-              <dd class="card__info-description">${occurrence}</dd>
+              <dd class="card__info-description">${episode.length}</dd>
             </dl>
           </div>
     `;
